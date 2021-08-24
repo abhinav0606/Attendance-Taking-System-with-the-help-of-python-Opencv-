@@ -9,7 +9,7 @@ except:
     print("Folder Already exist")
     exit()
 faces=cv2.CascadeClassifier("frontal_face.xml")
-Capture=cv2.VideoCapture(0)
+Capture=cv2.VideoCapture(0,cv2.CAP_DSHOW)
 count=1
 while True:
     ret,frame=Capture.read()
