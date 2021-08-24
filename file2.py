@@ -10,13 +10,13 @@ print(date)
 Name=input("Enter the name of the Student")
 Id=input("Enter the id of the student")
 folder=Name.lower()+Id.lower()
-list_files=os.listdir("/home/abhinav/PycharmProjects/Attendance System with the help of opencv]/"+folder)
+list_files=os.listdir("C:\Users\\abhin\Desktop\Projects\Attendance-Taking-System-with-the-help-of-python-Opencv-\\"+folder)
 list_files.sort()
 print(list_files)
 l=[]
 t=[]
 for i in range(len(list_files)):
-    image_path="/home/abhinav/PycharmProjects/Attendance System with the help of opencv]/"+folder+"/"+list_files[i]
+    image_path="C:\Users\\abhin\Desktop\Projects\Attendance-Taking-System-with-the-help-of-python-Opencv-\\"+folder+"\\"+list_files[i]
     print(image_path)
     image=cv2.imread(image_path,cv2.IMREAD_GRAYSCALE)
     t.append(np.asarray(image,dtype=np.uint8))
