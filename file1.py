@@ -1,7 +1,5 @@
 import cv2
 import os
-import warnings
-
 id=input("Enter the id of the student")
 folder=id.lower()
 try:
@@ -26,5 +24,4 @@ while True:
     if cv2.waitKey(1)==13 or count==400:
         break
 Capture.release()
-warnings.filterwarnings("ignore")
 cv2.destroyAllWindows()
