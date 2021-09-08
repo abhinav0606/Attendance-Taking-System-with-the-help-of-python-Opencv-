@@ -4,6 +4,7 @@ import numpy as np
 import datetime
 import xlsxwriter
 import pandas as pd
+import warnings
 listing=str(datetime.datetime.now())
 date=listing.split(" ")[0]
 print(date)
@@ -21,10 +22,11 @@ for i in range(len(list_files)):
     t.append(np.asarray(image,dtype=np.uint8))
     l.append(i)
 l=np.asarray(l,dtype=np.int32)
+warnings.filterwarnings("ignore",category=np.VisibleDeprecationWarning)
 model=cv2.face.LBPHFaceRecognizer_create()
 model.train(np.asarray(t),np.asarray(l))
 faces=cv2.CascadeClassifier("frontal_face.xml")
-capture=cv2.VideoCapture(0)
+capture=cv2.VideoCapture(0,cv2.CAP_DSHOW)
 result=0
 attendence=[]
 while True:
@@ -78,5 +80,6 @@ print(attendence)
 #             worksheet.write(0, len(columns_excell), date, bold)
 #             worksheet.write(1, len(columns_excell), Id)
 #     workbook.close()
+
 capture.release()
 cv2.destroyAllWindows()
