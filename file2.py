@@ -7,9 +7,8 @@ import pandas as pd
 listing=str(datetime.datetime.now())
 date=listing.split(" ")[0]
 print(date)
-Name=input("Enter the name of the Student")
 Id=input("Enter the id of the student")
-folder=Name.lower()+Id.lower()
+folder=Id.lower()
 list_files=os.listdir(r"C:\Users\\abhin\Desktop\Projects\Attendance-Taking-System-with-the-help-of-python-Opencv-\\"+folder)
 list_files.sort()
 print(list_files)
@@ -53,31 +52,31 @@ while True:
     if cv2.waitKey(1)==13 or len(attendence)==120:
         break
 print(attendence)
-if attendence.count("Present")>77:
-    listy=str(datetime.datetime.now())
-    date=listy.split(" ")[0]
-    excel_data=pd.read_excel("a.xlsx")
-    columns_excell=list(excel_data.columns)
-    print(columns_excell)
-    workbook=xlsxwriter.Workbook("a.xlsx")
-    worksheet=workbook.add_worksheet()
-    worksheet.set_column(0,40,25)
-    bold = workbook.add_format({'bold': True})
-    for i in range(len(columns_excell)):
-        print(columns_excell[i])
-        worksheet.write(0,i,columns_excell[i],bold)
-        for j in range(len(excel_data[columns_excell[i]])):
-            worksheet.write(j+1,i,excel_data[columns_excell[i]][j])
-    if date in columns_excell:
-        index = columns_excell.index(date)
-        worksheet.write(len(excel_data[date])+1, index, Id)
-    else:
-        if columns_excell == []:
-            worksheet.write(0, len(columns_excell), date, bold)
-            worksheet.write(1, len(columns_excell), Id)
-        else:
-            worksheet.write(0, len(columns_excell), date, bold)
-            worksheet.write(1, len(columns_excell), Id)
-    workbook.close()
+# if attendence.count("Present")>77:
+#     listy=str(datetime.datetime.now())
+#     date=listy.split(" ")[0]
+#     excel_data=pd.read_excel("a.xlsx")
+#     columns_excell=list(excel_data.columns)
+#     print(columns_excell)
+#     workbook=xlsxwriter.Workbook("a.xlsx")
+#     worksheet=workbook.add_worksheet()
+#     worksheet.set_column(0,40,25)
+#     bold = workbook.add_format({'bold': True})
+#     for i in range(len(columns_excell)):
+#         print(columns_excell[i])
+#         worksheet.write(0,i,columns_excell[i],bold)
+#         for j in range(len(excel_data[columns_excell[i]])):
+#             worksheet.write(j+1,i,excel_data[columns_excell[i]][j])
+#     if date in columns_excell:
+#         index = columns_excell.index(date)
+#         worksheet.write(len(excel_data[date])+1, index, Id)
+#     else:
+#         if columns_excell == []:
+#             worksheet.write(0, len(columns_excell), date, bold)
+#             worksheet.write(1, len(columns_excell), Id)
+#         else:
+#             worksheet.write(0, len(columns_excell), date, bold)
+#             worksheet.write(1, len(columns_excell), Id)
+#     workbook.close()
 capture.release()
 cv2.destroyAllWindows()
