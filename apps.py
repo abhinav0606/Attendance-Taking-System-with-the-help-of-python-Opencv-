@@ -36,7 +36,14 @@ def index():
     return render_template('index.html')
 @app.route("/",methods=["POST"])
 def index_post():
-    return "Under Construction"
+    global login_folder
+    login_id=request.form.get("login_id")
+    login_folder=login_id.lower()
+    try:
+        os.mkdir(r"C:\Users\\abhin\Desktop\Projects\Attendance-Taking-System-with-the-help-of-python-Opencv-\\" +login_folder)
+    except:
+        return login_folder
+    return "Folder Already Exists"
 
 @app.route('/video_feed')
 def video_feed():
