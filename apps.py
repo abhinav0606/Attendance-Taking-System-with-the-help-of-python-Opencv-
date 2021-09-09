@@ -36,7 +36,6 @@ def gen_dataset(folder):
     cv2.destroyAllWindows()
     return "Done!"
 def take_attendace(folder):
-    capture=cv2.VideoCapture(0,cv2.CAP_DSHOW)
     list_files=os.listdir(r"C:\Users\\abhin\Desktop\Projects\Attendance-Taking-System-with-the-help-of-python-Opencv-\\"+folder)
     list_files.sort()
     l=[]
@@ -51,11 +50,10 @@ def take_attendace(folder):
     model = cv2.face.LBPHFaceRecognizer_create()
     model.train(np.asarray(t), np.asarray(l))
     capture=cv2.VideoCapture(0,cv2.CAP_DSHOW)
-    result=0
     attendance=[]
     while True:
         ret,frame=capture.read()
-        frame=cv2.flip(frame,0)
+        frame=cv2.flip(frame,1)
         grey_frame=cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
         face=faces.detectMultiScale(grey_frame,1.3,5)
         for (x,y,w,h) in face:
@@ -70,11 +68,13 @@ def take_attendace(folder):
             else:
                 cv2.putText(frame, "locked " + str(confidence), (400, 450), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 255),2)
                 attendance.append("Absent")
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
             if len(attendance)==100:
                 break
             else:
                 yield (b'--frame\r\n'
-                       b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                           b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
         if len(attendance)==100:
             break
     print(attendance)
@@ -91,11 +91,10 @@ def index_post():
     global login_folder
     login_id=request.form.get("login_id")
     login_folder=login_id.lower()
-    try:
-        os.mkdir(r"C:\Users\\abhin\Desktop\Projects\Attendance-Taking-System-with-the-help-of-python-Opencv-\\" +login_folder)
-    except:
-        return login_folder
-    return "Folder Already Exists!!!!"
+    if os.path.isdir(r"C:\Users\\abhin\Desktop\Projects\Attendance-Taking-System-with-the-help-of-python-Opencv-\\" +login_folder):
+        return render_template("login_view.html",folder=login_folder)
+    else:
+        return "Folder Doesnot Existed"
 
 @app.route('/video_feed')
 def video_feed():
