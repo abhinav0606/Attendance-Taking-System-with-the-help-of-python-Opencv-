@@ -85,6 +85,7 @@ def take_attendace(folder):
 @app.route('/')
 def index():
     return render_template('index.html')
+
 @app.route("/",methods=["POST"])
 def index_post():
     global login_folder
@@ -100,6 +101,10 @@ def index_post():
 def video_feed():
     # return name
     return Response(gen_dataset(folder), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route("/video_feed_login")
+def video_feed_login():
+    return Response(take_attendace(login_folder),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route("/register")
 def register():
