@@ -42,7 +42,6 @@ while True:
             confidence = int(100 * ((1 - result[1] / 300)))
         if confidence>75:
             cv2.putText(frame, "unlocked "+str(confidence), (400, 450), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 255), 2)
-            # cv2.putText(frame, (100, 100), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 2)
             attendence.append("Present")
         else:
             cv2.putText(frame, "locked "+str(confidence), (400, 450), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 255), 2)

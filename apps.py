@@ -5,9 +5,10 @@ from flask import request
 import cv2
 import os
 import datetime
-import xlsxwriter
 import numpy as np
 import warnings
+import sqlite3
+connection=sqlite3.connect("DataTable.db",check_same_thread=False)
 app=Flask(__name__)
 faces=cv2.CascadeClassifier("frontal_face.xml")
 def gen_dataset(folder):
@@ -62,7 +63,7 @@ def take_attendace(folder):
             confidence=0
             if result[1] < 500:
                 confidence = int(100 * ((1 - result[1] / 300)))
-            if confidence > 75:
+            if confidence > 80:
                 cv2.putText(frame, "unlocked " + str(confidence), (400, 450), cv2.FONT_HERSHEY_COMPLEX, 1,(255, 0, 255), 2)
                 attendance.append("Present")
             else:
@@ -71,7 +72,33 @@ def take_attendace(folder):
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             if len(attendance)==100:
-                break
+                try:
+                    date_time=str(datetime.datetime.now())[:10]
+                    date_time=date_time.replace("-","")
+                    print(date_time)
+                    F=f'''CREATE TABLE {str(datetime.datetime.now())[:10]}
+                        (NAME TEXT NOT NULL,
+                         STATUS TEXT NOT NULL)'''
+                    print(F)
+                    # connection.execute(F)
+                except:
+                    pass
+                if attendance.count("Present")>75:
+                    date_time=str(datetime.datetime.now())[:10]
+                    date_time=date_time.replace("-","")
+                    print(date_time)
+                    s=f"INSERT INTO {date_time} (NAME,STATUS) \
+                      VALUES ('{folder}','PRESENT')"
+                    print(s)
+                    connection.execute(s)
+                else:
+                    date_time=str(datetime.datetime.now())[:10]
+                    date_time=date_time.replace("-","")
+                    print(date_time)
+                    s=f"INSERT INTO {date_time} (NAME,STATUS) \
+                      VALUES ('{folder}','ABSENT')"
+                    print(s)
+                    connection.execute(s)
             else:
                 yield (b'--frame\r\n'
                            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
