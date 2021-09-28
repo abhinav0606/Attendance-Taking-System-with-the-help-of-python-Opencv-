@@ -8,7 +8,6 @@ import datetime
 import numpy as np
 import warnings
 import sqlite3
-connection=sqlite3.connect("DataTable.db",check_same_thread=False)
 app=Flask(__name__)
 faces=cv2.CascadeClassifier("frontal_face.xml")
 def gen_dataset(folder):
@@ -76,29 +75,34 @@ def take_attendace(folder):
                     date_time=str(datetime.datetime.now())[:10]
                     date_time=date_time.replace("-","")
                     print(date_time)
-                    F=f'''CREATE TABLE {str(datetime.datetime.now())[:10]}
+                    connection = sqlite3.connect("DataTable.db", check_same_thread=False)
+                    F=f'''CREATE TABLE ABHINAV
                         (NAME TEXT NOT NULL,
                          STATUS TEXT NOT NULL)'''
-                    print(F)
-                    # connection.execute(F)
+                    connection.execute(F)
+                    connection.commit()
+                    connection.close()
                 except:
                     pass
                 if attendance.count("Present")>75:
                     date_time=str(datetime.datetime.now())[:10]
                     date_time=date_time.replace("-","")
                     print(date_time)
-                    s=f"INSERT INTO {date_time} (NAME,STATUS) \
-                      VALUES ('{folder}','PRESENT')"
-                    print(s)
+                    connection = sqlite3.connect("DataTable.db", check_same_thread=False)
+                    s=f"INSERT INTO ABHINAV (NAME,STATUS) VALUES ('{folder}','PRESENT')"
                     connection.execute(s)
+                    connection.commit()
+                    connection.close()
                 else:
                     date_time=str(datetime.datetime.now())[:10]
                     date_time=date_time.replace("-","")
                     print(date_time)
-                    s=f"INSERT INTO {date_time} (NAME,STATUS) \
-                      VALUES ('{folder}','ABSENT')"
+                    connection = sqlite3.connect("DataTable.db", check_same_thread=False)
+                    s=f"INSERT INTO ABHINAV (NAME,STATUS) VALUES ('{folder}','ABSENT')"
                     print(s)
                     connection.execute(s)
+                    connection.commit()
+                    connection.close()
             else:
                 yield (b'--frame\r\n'
                            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
